@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div class="container">
+        <h1>Criar Evento</h1>
+        <hr>
+        <form method="POST">
+            {{ form_criarevento.csrf_token }}
+            <div class="mb-3">
+                {{ form_criarevento.nome_evento.label(class="form-label") }}
+                {{ form_criarevento.nome_evento(class="form-control") }}
+                {% if form_criarevento.nome_evento.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in form_criarevento.nome_evento.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                {{ form_criarevento.data.label(class="form-label") }}
+                {{ form_criarevento.data(class="form-control") }}
+                {% if form_criarevento.data.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in form_criarevento.data.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <div class="form-text">Use o formato AAAA-MM-DDTHH:MM</div>
+            </div>
+            <div class="mb-3">
+                {{ form_criarevento.local.label(class="form-label") }}
+                {{ form_criarevento.local(class="form-control", rows="3") }}
+                {% if form_criarevento.local.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in form_criarevento.local.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                {{ form_criarevento.organizador.label(class="form-label") }}
+                {{ form_criarevento.organizador(class="form-control") }}
+                {% if form_criarevento.organizador.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in form_criarevento.organizador.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            {{ form_criarevento.botao_submit_criar_evento(class="btn btn-primary") }}
+        </form>
+    </div>
+{% endblock body %}

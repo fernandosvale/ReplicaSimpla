@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div class="container">
+        <h1>Participar de um Evento</h1>
+        <hr>
+        <form method="POST">
+            {{ form_participar_evento.csrf_token }}
+            <div class="mb-3">
+                {{ form_participar_evento.nome_completo.label(class="form-label") }}
+                {{ form_participar_evento.nome_completo(class="form-control") }}
+                {% if form_participar_evento.nome_completo.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in form_participar_evento.nome_completo.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                {{ form_participar_evento.email.label(class="form-label") }}
+                {{ form_participar_evento.email(class="form-control") }}
+                {% if form_participar_evento.email.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in form_participar_evento.email.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                {{ form_participar_evento.evento.label(class="form-label") }}
+                {{ form_participar_evento.evento(class="form-select") }}
+                {% if form_participar_evento.evento.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in form_participar_evento.evento.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            {{ form_participar_evento.botao_submit_participar(class="btn btn-primary") }}
+        </form>
+    </div>
+{% endblock body %}
