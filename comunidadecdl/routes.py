@@ -1,12 +1,15 @@
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, abort
 from comunidadecdl import app, database, bcrypt
 from comunidadecdl.forms import FormLogin, FormCriarConta, FormCriarEvento, FormsParticiparEvento
 from comunidadecdl.models import Usuario, Evento, Participacao
 from flask_login import login_user, logout_user, current_user, login_required
 from datetime import datetime
+import os
+import secrets
 
 
-lista_usuarios =['Forró no sitio', 'Kangalha', 'G4', 'Síara Hall']
+lista_usuarios = ['Forró no sitio', 'Kangalha', 'G4', 'Síara Hall']
+
 
 @app.route("/")
 def home():
@@ -20,8 +23,9 @@ def contatos():
 
 @app.route("/eventos")
 @login_required
-def usuarios():
-    return render_template('eventos.html')
+def eventos(): # Alterado o nome da função para 'eventos'
+    eventos = Evento.query.all() # Busca os eventos do banco de dados
+    return render_template('eventos.html', eventos=eventos) # Passa os eventos para o template
 
 
 @app.route("/login", methods=['GET', 'POST'])
@@ -44,10 +48,12 @@ def login():
 
     if form_criarconta.validate_on_submit() and 'botao_submit_criarconta' in request.form:
         senha_cript = bcrypt.generate_password_hash(form_criarconta.senha.data)
-        usuario = Usuario(username=form_criarconta.username.data, email=form_criarconta.email.data, senha=senha_cript)
+        usuario = Usuario(username=form_criarconta.username.data,
+                        email=form_criarconta.email.data, senha=senha_cript)
         database.session.add(usuario)
         database.session.commit()
-        flash(f'Conta criada com sucesso no e-mail:{form_criarconta.email.data}', 'alert-success')
+        flash(
+            f'Conta criada com sucesso no e-mail:{form_criarconta.email.data}', 'alert-success')
         return redirect(url_for('home'))
 
     return render_template('login.html', form_login=form_login, form_criarconta=form_criarconta)
@@ -66,22 +72,47 @@ def sair():
 def perfil():
     return render_template('perfil.html')
 
+
+def salvar_foto(foto):
+    if foto:
+        formato = foto.filename.split('.')[-1]
+        nome_seguro = secrets.token_hex(16) + '.' + formato
+        caminho_arquivo = os.path.join(
+            app.root_path, 'static/foto_eventos', nome_seguro)
+        foto.save(caminho_arquivo)
+        return nome_seguro
+    return None
+
+
 @app.route('/post/criar', methods=['GET', 'POST'])
 @login_required
 def criar_evento():
     form_criarevento = FormCriarEvento()
     if form_criarevento.validate_on_submit():
         nome_evento = form_criarevento.nome_evento.data
-        data = form_criarevento.data.data
-        local = form_criarevento.local.data
-        organizador = form_criarevento.organizador.data
-        # Correção: Passando o ID do usuário logado para id_usuario
-        evento = Evento(titulo=nome_evento, organizador=organizador, endereco=local, data=data, id_usuario=current_user.id)
+        data_evento = form_criarevento.data.data
+        local_evento = form_criarevento.local.data
+        organizador_evento = form_criarevento.organizador.data
+
+        foto1_nome = salvar_foto(form_criarevento.foto1.data)
+        foto2_nome = salvar_foto(form_criarevento.foto2.data)
+        foto3_nome = salvar_foto(form_criarevento.foto3.data)
+        evento = Evento(
+            titulo=nome_evento,
+            organizador=organizador_evento,
+            endereco=local_evento,
+            data=data_evento,
+            id_usuario=current_user.id,
+            foto1=foto1_nome,
+            foto2=foto2_nome,
+            foto3=foto3_nome
+        )
         database.session.add(evento)
         database.session.commit()
         flash('Evento criado com sucesso!', 'success')
-        return redirect(url_for('home'))  # Redirecione para a página apropriada
+        return redirect(url_for('home'))
     return render_template('criarevento.html', form_criarevento=form_criarevento)
+
 
 @app.route('/post/particpar', methods=['GET', 'POST'])
 @login_required
@@ -102,7 +133,8 @@ def participar_evento():
             return redirect(url_for('home'))
 
         # Verificar se o usuário já está participando do evento.
-        participacao = Participacao.query.filter_by(usuario_id=current_user.id, evento_id=evento_id).first()
+        participacao = Participacao.query.filter_by(
+            usuario_id=current_user.id, evento_id=evento_id).first()
         if participacao:
             flash('Você já está participando deste evento!', 'warning')
             return redirect(url_for('home'))
@@ -110,7 +142,7 @@ def participar_evento():
         nova_participacao = Participacao(
             usuario_id=current_user.id,
             evento_id=evento_id,
-            nome_completo=nome_completo,  # Usar nome_completo
+            nome_completo=nome_completo,
             email=email
         )
         database.session.add(nova_participacao)
@@ -121,3 +153,10 @@ def participar_evento():
 
     return render_template('participarevento.html', form_participar_evento=form_participar_evento)
 
+
+@app.route('/evento/<int:evento_id>/participantes')
+@login_required
+def lista_participantes(evento_id):
+    evento = Evento.query.get_or_404(evento_id)  # Obtém o evento ou retorna 404 se não encontrado
+    participantes = Participacao.query.filter_by(evento_id=evento.id).all()  # Obtém os participantes do evento
+    return render_template('lista_participantes.html', evento=evento, participantes=participantes)

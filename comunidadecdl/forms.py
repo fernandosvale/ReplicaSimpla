@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, DateTimeLocalField, TextAreaField, SelectField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, DateTimeLocalField, TextAreaField, SelectField, FileField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from comunidadecdl.models import Usuario, Evento
+from flask_wtf.file import FileAllowed
 
 class FormCriarConta(FlaskForm):
     username = StringField('Nome Usuário', validators=[DataRequired()])
@@ -28,6 +29,9 @@ class FormCriarEvento(FlaskForm):
     data = DateTimeLocalField('Data e Hora', format='%Y-%m-%dT%H:%M', validators=[DataRequired()])
     local = TextAreaField('Local (Endereço)', validators=[DataRequired()])
     organizador = StringField('Organizador', validators=[DataRequired()])
+    foto1 = FileField('Foto 1', validators=[FileAllowed(['jpg', 'jpeg', 'png'])])
+    foto2 = FileField('Foto 2', validators=[FileAllowed(['jpg', 'jpeg', 'png'])])
+    foto3 = FileField('Foto 3', validators=[FileAllowed(['jpg', 'jpeg', 'png'])])
     botao_submit_criar_evento = SubmitField('Criar Evento')
 
 

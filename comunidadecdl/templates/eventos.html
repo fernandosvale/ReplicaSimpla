@@ -1,9 +1,26 @@
 {% extends 'base.html' %}
-
 {% block body %}
-
-    <div class ="container">
+    <div class="container">
         <h1>Eventos</h1>
+        <hr>
+        <div class="row g-4">  {# Use row para criar um grid responsivo #}
+            {% for evento in eventos %}
+                <div class="col-md-6 col-lg-4">  {# Defina o tamanho das colunas para os flashcards #}
+                    <div class="card h-100"> {# Use h-100 para garantir que os cards tenham a mesma altura #}
+                        {% if evento.foto1 %}
+                            <img src="{{ url_for('static', filename='foto_eventos/' ~ evento.foto1) }}" class="card-img-top" alt="Foto do Evento">
+                        {% else %}
+                            <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="Foto do Evento"> {# Use um placeholder se não houver foto #}
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ evento.titulo }}</h5>
+                            <p class="card-text">Data: {{ evento.data.strftime('%d/%m/%Y %H:%M') }}</p> {# Formate a data #}
+                            <p class="card-text">Organizador: {{ evento.organizador }}</p>
+                            <a href="{{ url_for('lista_participantes', evento_id=evento.id) }}" class="btn btn-primary">Ver Participantes</a>  {# Crie um link para a rota da lista de participantes #}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
     </div>
-
 {% endblock body %}

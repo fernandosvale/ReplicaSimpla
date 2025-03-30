@@ -1,10 +1,9 @@
 {% extends 'base.html' %}
-
 {% block body %}
     <div class="container">
         <h1>Criar Evento</h1>
         <hr>
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
             {{ form_criarevento.csrf_token }}
             <div class="mb-3">
                 {{ form_criarevento.nome_evento.label(class="form-label") }}
@@ -46,6 +45,39 @@
                 {% if form_criarevento.organizador.errors %}
                     <div class="invalid-feedback">
                         {% for error in form_criarevento.organizador.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                {{ form_criarevento.foto1.label(class="form-label") }}
+                {{ form_criarevento.foto1(class="form-control") }}
+                {% if form_criarevento.foto1.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in form_criarevento.foto1.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                {{ form_criarevento.foto2.label(class="form-label") }}
+                {{ form_criarevento.foto2(class="form-control") }}
+                {% if form_criarevento.foto2.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in form_criarevento.foto2.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                {{ form_criarevento.foto3.label(class="form-label") }}
+                {{ form_criarevento.foto3(class="form-control") }}
+                {% if form_criarevento.foto3.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in form_criarevento.foto3.errors %}
                             <span>{{ error }}</span>
                         {% endfor %}
                     </div>
