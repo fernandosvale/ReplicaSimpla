@@ -160,3 +160,18 @@ def lista_participantes(evento_id):
     evento = Evento.query.get_or_404(evento_id)  # Obtém o evento ou retorna 404 se não encontrado
     participantes = Participacao.query.filter_by(evento_id=evento.id).all()  # Obtém os participantes do evento
     return render_template('lista_participantes.html', evento=evento, participantes=participantes)
+
+
+@app.route('/evento/<int:evento_id>/certificados/<int:participante_id>')
+@login_required
+def certificados(evento_id, participante_id):
+    evento = Evento.query.get_or_404(evento_id)
+    # Garante que apenas o criador do evento pode acessar esta página
+    if evento.id_usuario != current_user.id:
+        abort(403)
+    participante = Participacao.query.get_or_404(participante_id)
+
+
+    return render_template('certificados.html', evento=evento, participante=participante)
+
+

@@ -2,7 +2,7 @@
 {% block body %}
     <div class="container">
         <h1>Participantes do Evento: {{ evento.titulo }}</h1>
-        <p>Total de Participantes: {{ participantes | length }}</p> {# Exibe o total de participantes #}
+        <p>Total de Participantes: {{ participantes | length }}</p>
         <hr>
         {% if participantes %}
             <div class="table-responsive">
@@ -10,12 +10,18 @@
                     <thead>
                         <tr>
                             <th>Nome Completo</th>
+                            {% if evento.id_usuario == current_user.id %}
+                                <th>Certificado</th>
+                            {% endif %}
                         </tr>
                     </thead>
                     <tbody>
                         {% for participante in participantes %}
                             <tr>
-                                <td>{{ participante.nome_completo }}</td> {# Exibe apenas o nome completo #}
+                                <td>{{ participante.nome_completo }}</td>
+                                {% if evento.id_usuario == current_user.id %}
+                                    <td><a href="{{ url_for('certificados', evento_id=evento.id, participante_id=participante.id) }}" class="btn btn-sm btn-primary">Gerar Certificado</a></td>
+                                {% endif %}
                             </tr>
                         {% endfor %}
                     </tbody>

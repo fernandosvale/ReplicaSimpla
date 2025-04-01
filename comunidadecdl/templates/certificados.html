@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block body %}
+    <div class="container">
+        <h1 class="text-center mb-5">Certificado de Participação</h1>
+            <div class="certificacao mb-4 p-4 border border-dark rounded">
+                <h2 class="text-center">Certificado de Participação</h2>
+                <p class="text-center">Certificamos que <strong>{{ participante.nome_completo }}</strong> participou do evento <strong>{{ evento.titulo }}</strong>.</p>
+            </div>
+        <button onclick="window.print()" class="btn btn-primary">Imprimir Certificado</button>
+        <a href="{{ url_for('lista_participantes', evento_id=evento.id) }}" class="btn btn-secondary mt-3">Voltar para Participantes</a>
+    </div>
+    <style>
+      @media print {
+        body * {
+          visibility: hidden;
+        }
+        .certificacao, .certificacao * {
+          visibility: visible;
+        }
+        .certificacao {
+          position: absolute;
+          left: 0;
+          top: 0;
+        }
+      }
+    </style>
+{% endblock body %}
+
