@@ -23,16 +23,14 @@ def contatos():
 
 @app.route("/eventos")
 @login_required
-def eventos(): # Alterado o nome da função para 'eventos'
-    eventos = Evento.query.all() # Busca os eventos do banco de dados
-    return render_template('eventos.html', eventos=eventos) # Passa os eventos para o template
+def eventos():  # Alterado o nome da função para 'eventos'
+    eventos = Evento.query.all()  # Busca os eventos do banco de dados
+    return render_template('eventos.html', eventos=eventos)  # Passa os eventos para o template
 
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     form_login = FormLogin()
-    form_criarconta = FormCriarConta()
-
     if form_login.validate_on_submit() and 'botao_submit_login' in request.form:
         usuario = Usuario.query.filter_by(email=form_login.email.data).first()
         if usuario and bcrypt.check_password_hash(usuario.senha, form_login.senha.data):
@@ -45,7 +43,12 @@ def login():
                 return redirect(url_for('home'))
         else:
             flash(f'Falha no login! E-mail ou senha incorretos', 'alert-danger')
+    return render_template('login.html', form_login=form_login)
 
+
+@app.route("/criar_conta", methods=['GET', 'POST'])
+def criar_conta():
+    form_criarconta = FormCriarConta()
     if form_criarconta.validate_on_submit() and 'botao_submit_criarconta' in request.form:
         senha_cript = bcrypt.generate_password_hash(form_criarconta.senha.data)
         usuario = Usuario(username=form_criarconta.username.data,
@@ -55,8 +58,7 @@ def login():
         flash(
             f'Conta criada com sucesso no e-mail:{form_criarconta.email.data}', 'alert-success')
         return redirect(url_for('home'))
-
-    return render_template('login.html', form_login=form_login, form_criarconta=form_criarconta)
+    return render_template('criar_conta.html', form_criarconta=form_criarconta)
 
 
 @app.route('/sair')
@@ -70,7 +72,20 @@ def sair():
 @app.route('/perfil')
 @login_required
 def perfil():
-    return render_template('perfil.html')
+    # Obtém o usuário logado
+    usuario = current_user
+
+    # Busca a quantidade de eventos criados por este usuário
+    eventos_criados = Evento.query.filter_by(id_usuario=usuario.id).count()
+
+    # Busca a quantidade de eventos em que este usuário está inscrito
+    eventos_inscritos = Participacao.query.filter_by(usuario_id=usuario.id).count()
+
+    # Renderiza o template HTML, passando os valores
+    return render_template('perfil.html',
+                           current_user=usuario,  # Garanta que current_user esteja disponível
+                           eventos_criados=eventos_criados,
+                           eventos_inscritos=eventos_inscritos)
 
 
 def salvar_foto(foto):
@@ -157,8 +172,10 @@ def participar_evento():
 @app.route('/evento/<int:evento_id>/participantes')
 @login_required
 def lista_participantes(evento_id):
-    evento = Evento.query.get_or_404(evento_id)  # Obtém o evento ou retorna 404 se não encontrado
-    participantes = Participacao.query.filter_by(evento_id=evento.id).all()  # Obtém os participantes do evento
+    evento = Evento.query.get_or_404(
+        evento_id)  # Obtém o evento ou retorna 404 se não encontrado
+    # Obtém os participantes do evento
+    participantes = Participacao.query.filter_by(evento_id=evento.id).all()
     return render_template('lista_participantes.html', evento=evento, participantes=participantes)
 
 
@@ -170,8 +187,4 @@ def certificados(evento_id, participante_id):
     if evento.id_usuario != current_user.id:
         abort(403)
     participante = Participacao.query.get_or_404(participante_id)
-
-
     return render_template('certificados.html', evento=evento, participante=participante)
-
-

@@ -1,58 +1,22 @@
 {% extends 'base.html' %}
 {% block body %}
-    <div class="container">
-        <h1 class="text-center mb-5 text-primary">Certificado de Participação</h1>
-        <div class="certificacao mb-4 p-5 border border-2 border-dark rounded shadow-lg">
-            <h2 class="text-center text-secondary mb-3">Certificado de Participação</h2>
-            <p class="text-center lead">
-                Certificamos que <strong class="text-info">{{ participante.nome_completo }}</strong> participou do evento <strong class="text-info">{{ evento.titulo }}</strong>.
+    <div class="container mt-5">
+        <h1 class="text-center mb-4" style="color: #1F2937; font-weight: 700;">Certificado de Participação</h1>
+        <div class="certificacao mb-4 p-5 rounded shadow-lg" style="background-color: #D1D5DB; border: 2px solid #6B7280;">
+            <h2 class="text-center mb-3" style="color: #1F2937; font-size: 24px; font-weight: bold;">Certificado de Participação</h2>
+            <p class="text-center" style="color: #4B5563; font-size: 18px; line-height: 1.6; margin-bottom: 20px;">
+                Certificamos que <strong style="color: #3B82F6;">{{ participante.nome_completo }}</strong> participou do evento <strong style="color: #3B82F6;">{{ evento.titulo }}</strong>.
             </p>
         </div>
         <div class="d-flex justify-content-center">
-            <button onclick="window.print()" class="btn btn-primary mr-3">Imprimir Certificado</button>
-            <a href="{{ url_for('lista_participantes', evento_id=evento.id) }}" class="btn btn-outline-secondary mt-3">Voltar para Participantes</a>
+            <button onclick="window.print()" class="btn btn-primary mr-3" style="background-color: #3B82F6; border: none; padding: 12px 24px; border-radius: 8px; font-size: 16px; font-weight: 500; transition: background-color 0.3s ease;">Imprimir Certificado</button>
+            <a href="{{ url_for('lista_participantes', evento_id=evento.id) }}" class="btn btn-outline-secondary mt-3" style="border-color: #6B7280; color: #6B7280; padding: 12px 24px; border-radius: 8px; font-size: 16px; font-weight: 500; transition: background-color 0.3s ease;">Voltar para Participantes</a>
         </div>
     </div>
     <style>
-      .text-primary {
-        color: #03318C !important; /* Azul escuro 1 */
-      }
-      .text-secondary {
-        color: #042959 !important; /* Azul escuro 2 */
-      }
-      .text-info {
-        color: #3999BF !important; /* Azul claro */
-      }
-      .btn-primary {
-        background-color: #03318C !important;
-        border-color: #03318C !important;
-      }
-      .btn-primary:hover {
-        background-color: #042959 !important;
-        border-color: #042959 !important;
-      }
-      .btn-outline-secondary {
-        border-color: #042959;
-        color: #042959;
-      }
-      .btn-outline-secondary:hover{
-        background-color: #042959;
+      .btn-outline-secondary:hover {
+        background-color: #6B7280;
         color: #F2F2F2;
-      }
-
-      .certificacao {
-        /*background-color: #f8f9fa; !* Um tom de fundo mais suave *!*/
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
-      }
-      .certificacao h2 {
-        font-size: 24px; /* Tamanho da fonte maior para o título do certificado */
-        font-weight: bold;
-      }
-      .certificacao p {
-        font-size: 18px; /* Tamanho da fonte maior para o texto do certificado */
-        line-height: 1.6; /* Espaçamento entre linhas melhorado */
-        margin-bottom: 20px; /* Espaçamento abaixo do parágrafo */
       }
       @media print {
         body * {
