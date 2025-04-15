@@ -1,7 +1,56 @@
 {% extends 'base.html' %}
 
 {% block body %}
-    <div class ="container">
-        <h1>Home page</h1>
+    <div class="container-fluid bg-primary text-white text-center py-5">
+        <h1 class="display-4">Bem-vindo à Homepage SistEvent</h1>
+        <p class="lead">Um espaço para eventos e networking.</p>
     </div>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">  {# Adicionei justify-content-center aqui #}
+            <div class="col-md-8">
+                <div class="card shadow-lg">
+                    <div class="card-body">
+                        <h2 class="card-title text-secondary">Próximos Eventos</h2>
+                        <p class="card-text">Confira os próximos eventos e participe!</p>
+                        <a href="{{ url_for('eventos') }}" class="btn btn-outline-info btn-lg">Ver Eventos</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid bg-dark text-white py-3 mt-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-6 text-center">
+                <p>&copy; 2024 Comunidade CDL. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Cores da paleta */
+        .bg-primary { background-color: #03318C !important; }  /* Azul escuro 1 */
+        .bg-secondary { background-color: #042959 !important; }  /* Azul escuro 2 */
+        .text-info { color: #3999BF !important; }            /* Azul claro */
+        .text-white { color: #F2F2F2 !important; }            /* Branco */
+        .bg-dark { background-color: #0D0D0D !important; }      /* Preto */
+
+        /* Estilos adicionais */
+        .btn-outline-info {
+            border-color: #3999BF;
+            color: #3999BF;
+        }
+        .btn-outline-info:hover {
+            background-color: #3999BF;
+            color: #F2F2F2;
+        }
+        .card-title {
+            font-weight: bold;
+        }
+        .lead {
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+    </style>
 {% endblock body %}

@@ -1,7 +1,91 @@
 {% extends 'base.html' %}
 
 {% block body %}
-    <div class ="container">
-        <h1>Qualquer dúvida mande e-mail para losferas@gmail.com</h1>
+    <div class="container-fluid bg-primary text-white text-center py-5">
+        <h1 class="display-4">Entre em Contato</h1>
+        <p class="lead">Conecte-se comigo através dos seguintes canais:</p>
     </div>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-lg">
+                    <div class="card-body">
+                        <div class="list-group list-group-flush">
+                            <div class="list-group-item d-flex align-items-center">
+                                <i class="fas fa-envelope fa-2x text-info mr-3"></i>
+                                <div>
+                                    <h6 class="mb-1">Email:</h6>
+                                    <a href="mailto:pro.fernandovale@gmail.com" class="text-secondary">
+                                        pro.fernandovale@gmail.com
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="list-group-item d-flex align-items-center">
+                                <i class="fab fa-linkedin fa-2x text-info mr-3"></i>
+                                 <div>
+                                    <h6 class="mb-1">LinkedIn:</h6>
+                                    <a href="https://www.linkedin.com/in/fernandosilvavale" target="_blank" rel="noopener noreferrer" class="text-secondary">
+                                        https://www.linkedin.com/in/fernandosilvavale
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="list-group-item d-flex align-items-center">
+                                <i class="fab fa-github fa-2x text-info mr-3"></i>
+                                <div>
+                                     <h6 class="mb-1">GitHub:</h6>
+                                    <a href="https://github.com/fernandosvale" target="_blank" rel="noopener noreferrer" class="text-secondary">
+                                        https://github.com/fernandosvale
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="list-group-item d-flex align-items-center">
+                                <i class="fas fa-phone fa-2x text-info mr-3"></i>
+                                <div>
+                                    <h6 class="mb-1">Telefone:</h6>
+                                     <a href="tel:+5585986406134" class="text-secondary">
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid bg-dark text-white py-3 mt-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-6 text-center">
+                <p>&copy; 2024 Comunidade CDL. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Cores da paleta */
+        .bg-primary { background-color: #03318C !important; }
+        .bg-secondary { background-color: #042959 !important; }
+        .text-info { color: #3999BF !important; }
+        .text-white { color: #F2F2F2 !important; }
+        .bg-dark { background-color: #0D0D0D !important; }
+
+        /* Estilos adicionais */
+        .card-title {
+            font-weight: bold;
+        }
+        .lead {
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+        .list-group-item a {
+            text-decoration: none;
+            color: #0D0D0D; /* Cor do texto dos links */
+        }
+        .list-group-item a:hover {
+            color: #3999BF; /* Cor do texto dos links ao passar o mouse */
+            text-decoration: underline;
+        }
+    </style>
 {% endblock body %}
